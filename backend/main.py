@@ -1,10 +1,12 @@
+import os
+
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Any
 
-from utils import load_docs, split_docs, connect_lancedb
+from utils import load_docs, split_docs, connect_lancedb, get_answer
 
 # Load environment variables from .env file (if any)
 load_dotenv()
@@ -27,6 +29,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+api_key = os.getenv("OPENAI_API_KEY")
+directory = os.getenv("PATH_TO_KNOWLEDGE_BASE")
 
 @app.post("/predict", response_model = Response)
 def predict() -> Any:
@@ -36,20 +40,17 @@ def predict() -> Any:
   return {"result": "hello world!"}
 
 
-def test_func():
-    directory = "C:\git_repo\chatbot_git_repo\chatbot_llm\data"
-    print('directory: ', directory)
+def test_func(query):
     documents = load_docs(directory)
-    print("len of documents: ", len(documents))
+    print("Number of documents available in the knowledge base: ", len(documents))
     docs = split_docs(documents)
-    print("len of documents: ", len(docs))
-    # embeddings, query_result = sentence_transformer_embeddings()
-    # print('embeddings:\n', embeddings)
-    # print('query_result len:', len(query_result))
-    connect_lancedb(docs)
-    # connect_pinecone(docs, embeddings, query_result)
-    # embeddings = apply_embeddings()
+    print("Number of docs after Recursive Splitting: ", len(docs))
+    docsearch = connect_lancedb(docs, api_key)
+    answer = get_answer(query, docsearch, api_key)
+    print('answer: ', answer)
 
 
 if __name__ == '__main__':
-    test_func()
+    inp_query = input(str("Enter your query: "))
+    print("input query: ", inp_query)
+    test_func(inp_query)
