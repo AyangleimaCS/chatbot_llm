@@ -50,8 +50,8 @@ def rag_func(query):
     print('answer: ', answer)
     return answer
 
+
 if __name__ == '__main__':
     inp_query = input(str("Enter your query: "))
     print("input query: ", inp_query)
-    answer = test_func(inp_query)
-    rag_func(inp_query)
+    answer = rag_func(inp_query)
