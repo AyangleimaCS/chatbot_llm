@@ -48,9 +48,9 @@ def test_func(query):
     docsearch = connect_lancedb(docs, api_key)
     answer = get_answer(query, docsearch, api_key)
     print('answer: ', answer)
-
+    return answer
 
 if __name__ == '__main__':
     inp_query = input(str("Enter your query: "))
     print("input query: ", inp_query)
-    test_func(inp_query)
+    answer = test_func(inp_query)
