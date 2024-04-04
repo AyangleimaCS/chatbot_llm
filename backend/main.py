@@ -40,7 +40,7 @@ def predict() -> Any:
   return {"result": "hello world!"}
 
 
-def test_func(query):
+def rag_func(query):
     documents = load_docs(directory)
     print("Number of documents available in the knowledge base: ", len(documents))
     docs = split_docs(documents)
@@ -54,3 +54,4 @@ if __name__ == '__main__':
     inp_query = input(str("Enter your query: "))
     print("input query: ", inp_query)
     answer = test_func(inp_query)
+    rag_func(inp_query)
