@@ -29,8 +29,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-api_key = os.getenv("OPENAI_API_KEY")
-directory = os.getenv("PATH_TO_KNOWLEDGE_BASE")
+api_key = os.environ.get("OPENAI_API_KEY")
+# api_key = os.getenv("OPENAI_API_KEY")
+directory = os.environ.get("PATH_TO_KNOWLEDGE_BASE")
 
 @app.post("/predict", response_model = Response)
 def predict() -> Any:
